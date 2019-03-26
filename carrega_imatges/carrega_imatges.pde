@@ -1,21 +1,29 @@
 import controlP5.*;
+import peasy.*;
 
 ControlP5 cp5;
 RadioButton fitxers;
 String path; // path absolut a l'sketch
 File[] files;
 int quinaFile = 0;
+String filename = "";
+
+PeasyCam cam;
 
 float migW;
 float migH;
-
 PImage terra;
-String filename = "";
 
 void setup(){
-  size(1200,768);
+  size(1200,768, P3D);
   imageMode(CENTER);
   
+  println("...creating peasycam 3D perspective camera ...");
+  cam = new PeasyCam(this, 100);
+  cam.setMinimumDistance(100);
+  cam.setMaximumDistance(1500);
+  
+  println("...image filenames ...");
   path = sketchPath();
   println("path: " + path);
   String s1 = path.substring(0,path.lastIndexOf("/")+1);
@@ -33,6 +41,7 @@ void setup(){
     terra = loadImage(filename);
   }
   
+  println("...creating controls ...");
   cp5 = new ControlP5(this);
   fitxers = cp5.addRadioButton("llistatFitxers")
     .setPosition(20, 20)
@@ -44,15 +53,31 @@ void setup(){
   }
   fitxers.activate(quinaFile);
   
+  cp5.setAutoDraw(false);
+  
+  println("...variables de la app ...");
   migW = width*0.5;
   migH = height*0.5;
+  
+  println("########################################");
+  println("START###################################");
+  println("########################################");
 }
 
 void draw(){
   background(120);
   image(terra, migW, migH);
+  
+  gui();
 }
 
+void gui() {
+  hint(DISABLE_DEPTH_TEST);
+  cam.beginHUD();
+  cp5.draw(); // GUI
+  cam.endHUD();
+  hint(ENABLE_DEPTH_TEST);
+}
 void llistatFitxers(int a) {
   quinaFile = a;
   filename = path + files[quinaFile].getName();
