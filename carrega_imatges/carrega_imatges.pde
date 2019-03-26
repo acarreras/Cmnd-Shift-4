@@ -41,7 +41,8 @@ void setup(){
   for(int i=0; i<files.length; i++){
     File f = files[i];    
     fitxers.addItem(f.getName(), i);
-  } 
+  }
+  fitxers.activate(quinaFile);
   
   migW = width*0.5;
   migH = height*0.5;
