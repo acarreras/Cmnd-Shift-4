@@ -1,0 +1,7 @@
+RENAME FILES SEQUANTIALLY with 5 PADDED NUMBERS 00001 - 00002 etc.
+cd folder
+ls | cat -n | while read n f; do mv "$f" `printf "terra_%05d.jpg" $n`; d one
+
+CREATE VIDEO
+ffmpeg -framerate 25 -i terra_%05d.jpg -c:v libx264 -profile:v high -crf 20 -pix_fmt yuv420p terra.mp4
+

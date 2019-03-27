@@ -12,7 +12,9 @@ class Particle {
     fill(c);
     noStroke();
     pushMatrix();
-    translate(pos.x,pos.y,pos.z);
+    //translate(pos.x,pos.y,0);
+    //box(mida,mida,pos.z*ampliZ);
+    translate(pos.x,pos.y,pos.z*ampliZ);
     rect(0,0,mida,mida);
     popMatrix();
   } 

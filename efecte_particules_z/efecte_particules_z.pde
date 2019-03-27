@@ -5,7 +5,7 @@ ControlP5 cp5;
 RadioButton fitxers;
 String path; // path absolut a l'sketch
 File[] files;
-int quinaFile = 0;
+int quinaFile = 9;
 String filename = "";
 
 PeasyCam cam;
@@ -19,7 +19,10 @@ int terraH;
 float migterraW;
 float migterraH;
 ArrayList<Particle> particles = new ArrayList<Particle>();
-int saltPart = 10;
+int saltPart = 14;
+float ampliZ = 0;
+
+boolean bsaveFrames = false;
 
 void setup(){
   size(1200,768, P3D);
@@ -29,7 +32,7 @@ void setup(){
   println("...creating peasycam 3D perspective camera ...");
   cam = new PeasyCam(this, 100);
   cam.setMinimumDistance(100);
-  cam.setMaximumDistance(1500);
+  cam.setMaximumDistance(10500);
   
   println("...image filenames ...");
   path = sketchPath();
@@ -66,6 +69,8 @@ void setup(){
   
   println("...creating controls ...");
   cp5 = new ControlP5(this);
+  cp5.addFrameRate().setInterval(1).setPosition(width-20, 10);
+  
   fitxers = cp5.addRadioButton("llistatFitxers")
     .setPosition(20, 20)
     .setSize(20, 16)
@@ -85,6 +90,18 @@ void setup(){
      .setPosition(200,60)
      .setSize(40,16)
      .setValue(true)
+     .setMode(ControlP5.SWITCH)
+     ;
+     
+  cp5.addSlider("ampliZ")
+     .setPosition(200,100)
+     .setRange(0,10)
+     ;
+     
+  cp5.addToggle("bsaveFrames")
+     .setPosition(200,120)
+     .setSize(40,16)
+     .setValue(false)
      .setMode(ControlP5.SWITCH)
      ;
   
@@ -115,6 +132,8 @@ void draw(){
   }
   popMatrix();
   
+  if(bsaveFrames) saveFrame("./../frames/terra_#####.jpg");
+  
   gui();
 }
 
@@ -133,6 +152,15 @@ public void reset_camera() {
 void keyPressed(){
   if(key == 'c')  cam.reset();
   if(key == 't')  bdrawTerra = !bdrawTerra;
+  if(key == 's')  bsaveFrames = !bsaveFrames;
+}
+
+void mousePressed() {
+  if (cp5.isMouseOver()) {
+    cam.setActive(false);
+  } else {
+    cam.setActive(true);
+  }
 }
 
 void llistatFitxers(int a) {
