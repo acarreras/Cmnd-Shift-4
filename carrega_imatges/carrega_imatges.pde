@@ -5,7 +5,7 @@ ControlP5 cp5;
 RadioButton fitxers;
 String path; // path absolut a l'sketch
 File[] files;
-int quinaFile = 0;
+int quinaFile = 9;
 String filename = "";
 
 PeasyCam cam;
